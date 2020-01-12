@@ -97,6 +97,10 @@ class User(db.Model, UserMixin):
         return self.subscribed_to.filter_by(
             post_id=post.id).first() is not None
 
+    def delete_user(self):
+        #db.session.delete(self)
+        #db.session.commit()
+        pass
 
 class Posts(db.Model):
     id = db.Column(db.Integer, primary_key=True)

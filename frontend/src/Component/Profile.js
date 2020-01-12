@@ -138,6 +138,20 @@ export class Profile extends Component{
         });
 
    }
+    deleteUser(e) {
+      const old_id = this.state.current_user;
+    e.preventDefault();
+      axios.defaults.withCredentials = true;
+      axios.get('http://127.0.0.1:5000/logout').then(response => {
+          localStorage.removeItem('usertoken')
+          this.props.history.push(`/`)
+                axios.defaults.withCredentials = true;
+      axios.delete('http://127.0.0.1:5000/delete_user/'+old_id);
+      })
+        .catch(err => {
+          console.log(err)
+        })
+}
     render(){
         return( <div>
                     <div className="jumbotron-fluid mt-5" >
@@ -176,7 +190,10 @@ export class Profile extends Component{
                     updatePic={this.updateMenuPic.bind(this)} /> : <br/>}
                 {this.state.followersFlag  ? <Users id ={this.props.match.params.id} type={1} flag={this.state.isFollowing}/> : <br/>}
                 {this.state.followingFlag  ? <Users id ={this.props.match.params.id} type={2} flag={this.state.isFollowing}/> : <br/>}
-
+                <div className="text-center">
+                {(this.state.current_user == this.props.match.params.id) &&
+                <Button className="my-3" color="secondary" onClick={this.deleteUser.bind(this)}>Delete this user</Button>}
+                </div>
             </div>
 
         )

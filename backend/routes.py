@@ -141,6 +141,16 @@ def logout():
     logout_user()
     return 'Logged Out', 201
 
+@app.route("/delete_user/<int:user_id>", methods=['DELETE'])
+def delete_user(user_id):
+ #   old_id=  current_user.id;
+  #  logout_user()
+    user = User.query.filter_by(id= user_id).first()
+    db.session.delete(user)
+    db.session.commit()
+
+    return 'Deleted', 201
+
 
 @app.route('/is_following/<int:user_id>', methods=['GET'])
 @login_required

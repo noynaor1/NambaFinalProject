@@ -5,7 +5,6 @@ import axios from "axios";
 import Alert from "reactstrap/es/Alert";
 import DatePicker from "react-datepicker";
 import Button from "reactstrap/es/Button";
-
 const update = updatedUser => {
     axios.defaults.withCredentials = true;
   return axios
@@ -76,6 +75,7 @@ function ProfileInfo(props){
               </tr>
             </tbody>
           </table>
+
   );
 }
 
@@ -348,7 +348,7 @@ export class About extends Component {
                  }
                  else
                      {
-                                                console.log("here5");
+                         console.log("here5");
 
                          this.props.updateInfo(info);
                      }
@@ -369,6 +369,7 @@ export class About extends Component {
      }
   }
 
+
   render() {
     return (
       <div className="container">
@@ -383,6 +384,7 @@ export class About extends Component {
             />}
             <p className="m-md-4" align="center">
           {this.state.flag && (this.state.current_user == this.props.id) && <Button className="my-3" color="secondary" onClick={this.toggleUpdate.bind(this)}>Edit Profile</Button>}
+
             </p>
              {!this.state.flag && <EditProfile
               username={this.state.username}

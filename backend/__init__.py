@@ -9,7 +9,7 @@ from geopy.geocoders import Nominatim
 app = Flask(__name__)
 CORS(app, supports_credentials=True)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:56536462@localhost/TravelApp'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost/nambaFinalProject'
 app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 app.config['JWT_SECRET_KEY'] = 'secret'
 app.debug = True
