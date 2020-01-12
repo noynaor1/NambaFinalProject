@@ -6,6 +6,7 @@ import Landing from './Component/Landing'
 import Login from './Component/Login'
 import Register from './Component/Register'
 import Profile from './Component/Profile'
+import AddPost from './Component/Addpost'
 import {Redirect} from "react-router-dom";
 
 
@@ -39,6 +40,11 @@ class App extends Component {
             <Route exact path="/profile/:id" render={(props) => (
                 isLoggedIn() ? (
                     <Profile {...props} />) : (<Redirect to="/login"/> )
+            )}/>
+
+            <Route exact path = "/Addpost" render={(props) => (
+                isLoggedIn() ? (
+                    <AddPost {...props} />) : (<Redirect to="/login/"/> )
             )}/>
 
           </div>

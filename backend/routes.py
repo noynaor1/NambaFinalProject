@@ -8,6 +8,8 @@ from backend.models import User, Posts, Follow
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_jwt_extended import (create_access_token)
 import datetime
+import json
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -53,6 +55,34 @@ def get_user(user_id):
                     'followed': len(user.followed.all())})
 
 
+@app.route("/users/<int:user_id>", methods=['PUT'])
+@login_required
+def update_user(user_id):
+    data = request.get_json()
+
+    if not data or not 'username' in data or not 'first_name' in data \
+            or not 'last_name' in data or not 'gender' in data or not 'birth_date' in data or not 'email' in data:
+        abort(400)
+    check_user = User.query.filter_by(email=data['email']).first()
+    if check_user:
+        if not check_user.id == user_id:
+            return 'Email Taken'
+    check_user = User.query.filter_by(username=data['username']).first()
+    if check_user:
+        if not check_user.id == user_id:
+            return 'Username Taken'
+
+    current_user.username = data['username']
+    current_user.first_name = data['first_name']
+    current_user.last_name = data['last_name']
+    current_user.gender = data['gender']
+    current_user.birth_date = data['birth_date']
+    current_user.email = data['email']
+    db.session.add(current_user)
+    db.session.commit()
+    return 'Updated'
+
+
 @app.route("/user/<string:name>", methods=['GET'])
 def get_user_id(name):
     user = User.query.filter_by(username=name).first()
@@ -78,7 +108,8 @@ def register():
         return 'Username Taken'
     hashed_password = bcrypt.generate_password_hash(data['password']).decode('utf-8')
     user = User(username=data['username'], first_name=data['first_name'], last_name=data['last_name'],
-                gender=data['gender'], birth_date=datetime.datetime.now(), email=data['email'], password=hashed_password)
+                gender=data['gender'], birth_date=datetime.datetime.now(), email=data['email'],
+                password=hashed_password)
     db.session.add(user)
     db.session.commit()
     return 'Created'
@@ -111,7 +142,6 @@ def logout():
     return 'Logged Out', 201
 
 
-
 @app.route('/is_following/<int:user_id>', methods=['GET'])
 @login_required
 def is_following(user_id):
@@ -131,6 +161,47 @@ def is_following_me(user_id):
         return 'True'
     return 'False'
 
+
+@app.route('/follow/<int:user_id>', methods=['POST'])
+@login_required
+def follow_user(user_id):
+    user = User.query.get_or_404(user_id)
+    current_user.follow(user)
+    return 'True'
+
+
+@app.route('/unfollow/<int:user_id>', methods=['DELETE'])
+@login_required
+def unfollow_user(user_id):
+    user = User.query.get_or_404(user_id)
+    current_user.unfollow(user)
+    return 'True'
+
+
+
+@app.route("/addpost", methods=['POST'])
+def add_post():
+    data = request.get_json()
+    if not data or not 'title' in data or not 'start_date' in data or not 'end_date' in data \
+            or not 'country' in data or not 'city' in data or not 'content' in data:
+        abort(400)
+
+    user_id = current_user.id
+    post = Posts(title=data["title"], start_date=data["start_date"], end_date=data["end_date"],
+                 country=data["country"], city=["city"], content=data["content"], latitude=5, longitude=5,user_id=user_id)
+    db.session.add(post)
+    db.session.commit()
+    return 'True'
+
+@app.route("/myposts", methods=['GET'])
+def my_posts():
+    posts = Posts.query.filter_by(user_id=current_user.id).all()
+    result = []
+    for p in posts:
+        result.append({'id': p.id, 'title': p.title, 'date-posted': p.date_posted, 'user_id': p.user_id})
+    return jsonify(posts=result)
+
+
 def date_between(start_date, end_date, start_date_arg, end_date_arg):
     start_date_arg_converted = datetime.datetime.strptime(start_date_arg.split('T')[0], '%Y-%m-%d').date()
     end_date_arg_converted = datetime.datetime.strptime(end_date_arg.split('T')[0], '%Y-%m-%d').date()
@@ -138,4 +209,3 @@ def date_between(start_date, end_date, start_date_arg, end_date_arg):
     if start_date.date() <= end_date_arg_converted:
         return end_date.date() >= start_date_arg_converted
     return False
-

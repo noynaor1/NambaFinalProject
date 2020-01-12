@@ -78,6 +78,48 @@ ul.nav.nav-tabs {
 }
 .right {
     display: inline-block;
-      float: right;
+    margin: auto;
     width: 100%;
+}
+
+.column {
+  margin: auto;
+  width: 48%;
+  padding: 10px;
+  height: 400px;
+  overflow: overlay;
+  margin-bottom: 40px;
+  border-radius: 10px;
+  background-color: #f4f2fc;
+
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+/* width */
+.column::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.column::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+/* Handle */
+.column::-webkit-scrollbar-thumb {
+  background: #a793e5;
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+.column::-webkit-scrollbar-thumb:hover {
+  background: #9a83e1;
 }

@@ -6,6 +6,8 @@ import Autosuggest from 'react-bootstrap-autosuggest'
 import Form from "react-bootstrap/Form";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
+
+
 class Navbar extends Component {
     state ={
         current_user: 0,
@@ -77,6 +79,10 @@ class Navbar extends Component {
 
     const userLink = (
       <ul className="navbar-nav">
+
+       <li className="nav-item">
+            <Link to={"/addpost"} className="nav-link"> Add Post </Link>
+        </li>
         <li className="nav-item">
           <Link to={"/users/"+this.state.current_user} className="nav-link">
             User
@@ -96,13 +102,15 @@ class Navbar extends Component {
           </a>
         </li>
 
+
+
       </ul>
 
 
     )
 
     return (
-      <div><nav className="navbar navbar-expand-lg navbar-dark bg-dark rounded">
+      <div><nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <button
           className="navbar-toggler"
           type="button"

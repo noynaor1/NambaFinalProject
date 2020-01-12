@@ -66,7 +66,7 @@ export class Profile extends Component{
                 this.setState({
                    username: response.data.username,
                     image_file: response.data.image_file,
-                  email: response.data.email,
+                    email: response.data.email,
                     followers_amount: response.data.followers,
                     followed_amount: response.data.followed,
                 })
@@ -114,7 +114,7 @@ export class Profile extends Component{
 
     unfollowUser(){
          axios.defaults.withCredentials = true;
-         axios.delete('http://127.0.0.1:5000/follow/' + this.props.match.params.id).then((response) => {
+         axios.delete('http://127.0.0.1:5000/unfollow/' + this.props.match.params.id).then((response) => {
                 this.setState({
                    isFollowing: false
                 })
@@ -125,11 +125,12 @@ export class Profile extends Component{
    }
 
    updateMenuInfo(info){
+
+
         this.setState({
               username: info.username,
-                email: info.email,
+              email: info.email,
         });
-
    }
    updateMenuPic(info){
         this.setState({

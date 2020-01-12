@@ -15,7 +15,7 @@ const update = updatedUser => {
       last_name: updatedUser.last_name,
       gender: updatedUser.gender,
       birth_date: updatedUser.birth_date,
-      email: updatedUser.email,
+      email: updatedUser.email
     })
     .then(response => {
         return response.data
